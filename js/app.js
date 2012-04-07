@@ -43,7 +43,7 @@ function success(position) {
     $.getJSON(twitterSearchURL, params, function(data){
         var tweets = $("<ul class='unstyled' />");
         var tweetsNoGeo = $("<ul class='unstyled' />");
-        var icon = new google.maps.MarkerImage('/img/tweet.png')
+        var icon = new google.maps.MarkerImage('img/tweet.png')
         var latlngs = []
         for (var i = 0; i < data.results.length; i++){
             var tweet = data.results[i];
