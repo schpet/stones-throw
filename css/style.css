@@ -1,0 +1,32 @@
+#map {
+    background: #eee;
+    height: 160px;
+}
+.btn {
+    margin-bottom: 5px;
+}
+@media (max-width: 767px) {
+    #map {
+        height: 160px;
+    }
+    body {
+        padding: 0;
+    }
+}
+@media (min-width: 768px) {
+    #map {
+        height: 400px;
+    }
+}
+
+body {
+    margin-top: 10px;
+}
+.tweet { 
+    border-bottom: 1px solid #ddd;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+.highlight {
+    background-color: #FCF8E3;
+}
