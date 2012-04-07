@@ -10,12 +10,12 @@
   <body>
     <div class="container-fluid">
       <div class="row-fluid">
-        <div class="span6">
+        <div class="span5">
           <div id="map"></div>
           <div>
           </div>
         </div>
-        <div class="span6">
+        <div class="span7">
           <div id="tweets"></div>
           <div id="tweets-no-geo"></div>
         </div>
@@ -34,7 +34,7 @@
           {{#location}}
           <a href="http://maps.google.com/maps?z=12&t=m&q=loc:{{ lat }}+{{ lon }}" class="maplink btn" lat="{{ lat }}" lon="{{ lon }}">
             {{ distance }} km
-          </a>
+          </a><br class="hidden-phone">
           {{/location}}
           {{ time }}
         </div>

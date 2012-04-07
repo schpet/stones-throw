@@ -58,6 +58,7 @@ function success(position) {
                 var lon = tweet.geo.coordinates[1];
                 var tweetPosition = new LatLon(lat, lon);
                 var distance = userPosition.distanceTo(tweetPosition);
+                distance = parseFloat(distance).toFixed(2);
 
                 var tweetData = {
                     distance:  distance
