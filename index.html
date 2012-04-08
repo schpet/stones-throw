@@ -14,16 +14,16 @@
           <div class="span5 pointer-events">
             <div id="map"></div>
             <div>
-              <h3>Radius <small></small></h3>
+              <h3>Search Radius</h3>
               
               <div class="btn-group">
-                <button class="btn" id="radius-decrease">-</button>
+                <button class="btn" id="radius-decrease">&ndash;</button>
                 <span class="btn" id="radius-feedback">- km</span>
                 <button class="btn" id="radius-increase">+</button>
               </div>
             </div>
-            <div>
-              
+            <div class="error">
+              <span id="error"></span>
             </div>
           </div>
         </div>
@@ -39,8 +39,6 @@
           <div id="tweets"></div>
           <h3>Tweets without location <small>but <span class="hidden-phone-inline">twitter thinks</span> they are nearby</small></h3>
           <div id="tweets-no-geo"></div>
-          <a class="btn">Load more</a>
-          <a href="#">Back to top</a>
         </div>
       </div>
     </div>

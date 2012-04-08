@@ -16,6 +16,7 @@ function success(position) {
         position: latlng 
        ,map: map
        ,title:"Your location, within " + position.coords.accuracy + " meters"
+       ,zIndex: 1000
     });
 
     var zindex = 1000;
@@ -23,8 +24,8 @@ function success(position) {
 
     var markers = {};
 
-    var icon = new google.maps.MarkerImage('img/tweet_s.png')
-    var icon_highlight = new google.maps.MarkerImage('img/tweet_highlight_s.png')
+    var icon = new google.maps.MarkerImage('img/tweet.png')
+    var icon_highlight = new google.maps.MarkerImage('img/tweet_highlight.png')
 
     function highlight(tweetId, scrollTo){
         if(scrollTo === undefined)
@@ -45,7 +46,6 @@ function success(position) {
             markers[tweetId].setZIndex(zindex++);
             markers[tweetId].setIcon(icon_highlight);
             highlighted = tweetId;
-            
         }
     }
 
@@ -140,6 +140,7 @@ function success(position) {
             map.fitBounds(latlngbounds);
 
             $('.maplink').on('click', function(){
+                try {
                 window.scrollTo(0,$('#map').offset().top - 20);
                 var that = this;
                 (function(){
@@ -153,8 +154,11 @@ function success(position) {
                     highlight($(that).attr('tweetid'), false)();
 
                 })();
-
-                return false;
+                } catch(e){
+                    $('#error').text(e);
+                } finally {
+                    return false;
+                }
             });
             $('.mute').on('click', function(){
                 var that = this;
