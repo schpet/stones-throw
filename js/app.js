@@ -18,7 +18,15 @@ function success(position) {
        ,title:"Your location, within " + position.coords.accuracy + " meters"
     });
 
-    function highlight(selector, scrollTo){
+    var zindex = 1000;
+    var highlighted = null;
+
+    var markers = {};
+
+    var icon = new google.maps.MarkerImage('img/tweet_s.png')
+    var icon_highlight = new google.maps.MarkerImage('img/tweet_highlight_s.png')
+
+    function highlight(tweetId, scrollTo){
         if(scrollTo === undefined)
             scrollTo = true;
 
@@ -26,109 +34,147 @@ function success(position) {
             $('.highlight').each(function(){
                 $(this).removeClass('highlight');
             });
-            $(selector).addClass('highlight');
+            $('#' + tweetId).addClass('highlight');
             if(scrollTo)
-                $(window).scrollTop($(selector).offset().top);
+                $(window).scrollTop($('#' + tweetId).offset().top);
+
+            if(highlighted !== null){
+                markers[highlighted].setIcon(icon);
+            }
+
+            markers[tweetId].setZIndex(zindex++);
+            markers[tweetId].setIcon(icon_highlight);
+            highlighted = tweetId;
+            
         }
     }
 
-    // TODO use streaming api as it's geo results can be filtered better.
-    //      no client side js support though
-    var twitterSearchURL = 'http://search.twitter.com/search.json?callback=?';
-    var geocode = position.coords.latitude 
-            + "," + position.coords.longitude 
-            + ",1km"; 
 
-    params = {
-        geocode: geocode
-       ,include_entities: true
-    }
+    function searchTwitter(radius){
+        // TODO use streaming api as it's geo results can be filtered better.
+        //      no client side js support though
 
-    $.getJSON(twitterSearchURL, params, function(data){
-        var tweets = $("<ul class='unstyled' />");
-        var tweetsNoGeo = $("<ul class='unstyled' />");
-        var icon = new google.maps.MarkerImage('img/tweet.png')
-        var latlngs = []
-        for (var i = 0; i < data.results.length; i++){
-            var tweet = data.results[i];
-            var time = prettyDate(tweet.created_at);
-            var text = twttr.txt.autoLink(tweet.text, {
-                urlEntities: tweet.entities.urls 
-            });
+        for(var key in markers){
+            markers[key].setMap(null);
+        }
+        markers = {};
 
-            if(tweet.geo){
-                console.log(tweet);
-                var lat = tweet.geo.coordinates[0];
-                var lon = tweet.geo.coordinates[1];
-                var tweetPosition = new LatLon(lat, lon);
-                var distance = userPosition.distanceTo(tweetPosition);
-                distance = parseFloat(distance).toFixed(2);
+        var twitterSearchURL = 'http://search.twitter.com/search.json?callback=?';
+        var geocode = position.coords.latitude 
+                + "," + position.coords.longitude 
+                + "," + radius + "km"; 
 
-                var tweetData = {
-                    distance:  distance
-                   ,text: text
-                   ,handle: tweet.from_user
-                   ,time: time
-                   ,lat: lat
-                   ,lon: lon
-                   ,id: i
-                   ,location: true
-                }
+        params = {
+            geocode: geocode
+           ,include_entities: true
+           ,result_type: 'recent'
+           ,rpp: 100
+        }
 
-                var rendered = ich.tweet(tweetData)
-                tweets.append(rendered);
-
-                // G Maps marker
-                var latlng = new google.maps.LatLng(lat, lon);
-                latlngs.push(latlng);
-                var tweetMarker = new google.maps.Marker({
-                    title: tweet.text
-                   ,map: map
-                   ,position: latlng
-                   ,icon: icon 
+        $.getJSON(twitterSearchURL, params, function(data){
+            var tweets = $("<ul class='unstyled' />");
+            var tweetsNoGeo = $("<ul class='unstyled' />");
+            var latlngs = []
+            for (var i = 0; i < data.results.length; i++){
+                var tweet = data.results[i];
+                var time = prettyDate(tweet.created_at);
+                var text = twttr.txt.autoLink(tweet.text, {
+                    urlEntities: tweet.entities.urls 
                 });
+                var link = 'https://twitter.com/' + tweet.from_user + '/status/' + tweet.id_str;
 
-                google.maps.event.addListener(tweetMarker, 'click', 
-                        highlight('#' + i));
-            } else {
                 var tweetData = {
                     text: text
                    ,handle: tweet.from_user
                    ,time: time
                    ,id: i
+                   ,permalink: link
                 }
-                var rendered = ich.tweet(tweetData)
-                tweetsNoGeo.append(rendered);
+
+                if(tweet.geo){
+                    console.log(tweet);
+                    var lat = tweet.geo.coordinates[0];
+                    var lon = tweet.geo.coordinates[1];
+                    var tweetPosition = new LatLon(lat, lon);
+                    var distance = userPosition.distanceTo(tweetPosition);
+                    distance = parseFloat(distance).toFixed(2);
+
+                    tweetData['distance'] = distance;
+                    tweetData['lat'] = lat;
+                    tweetData['lon'] = lon
+                    tweetData['location'] = true
+
+                    var rendered = ich.tweet(tweetData)
+                    tweets.append(rendered);
+
+                    // G Maps marker
+                    var latlng = new google.maps.LatLng(lat, lon);
+                    latlngs.push(latlng);
+                    var tweetMarker = new google.maps.Marker({
+                        title: tweet.text
+                       ,map: map
+                       ,position: latlng
+                       ,icon: icon 
+                    });
+                    markers[i] = tweetMarker;
+
+                    google.maps.event.addListener(tweetMarker, 'click', 
+                            highlight(i));
+                } else {
+                    var rendered = ich.tweet(tweetData)
+                    tweetsNoGeo.append(rendered);
+                }
             }
-        }
+            console.log(markers);
 
-        $('#tweets').append(tweets);
-        $('#tweets-no-geo').append(tweetsNoGeo);
+            $('#tweets').empty();
+            $('#tweets').append(tweets);
+            $('#tweets-no-geo').empty();
+            $('#tweets-no-geo').append(tweetsNoGeo);
 
-        var latlngbounds = new google.maps.LatLngBounds();
-        for (var i = 0; i < latlngs.length; i++){
-            latlngbounds.extend(latlngs[i]);
-        }
+            var latlngbounds = new google.maps.LatLngBounds();
+            for (var i = 0; i < latlngs.length; i++){
+                latlngbounds.extend(latlngs[i]);
+            }
 
-        map.fitBounds(latlngbounds);
+            map.fitBounds(latlngbounds);
 
-        $('.maplink').on('click', function(){
-            window.scrollTo(0,0);
-            var that = this;
-            (function(){
-                var lat = ($(that).attr('lat'));
-                var lon = ($(that).attr('lon'));
-                var latlng = new google.maps.LatLng(lat, lon);
+            $('.maplink').on('click', function(){
+                window.scrollTo(0,$('#map').offset().top - 20);
+                var that = this;
+                (function(){
+                    var lat = ($(that).attr('lat'));
+                    var lon = ($(that).attr('lon'));
+                    var latlng = new google.maps.LatLng(lat, lon);
 
-                map.setCenter(latlng);
-                map.setZoom(15);
+                    map.setCenter(latlng);
+                    map.setZoom(15);
 
-                console.log('#' + $(that).attr('tweetid'));
-                highlight('#' + $(that).attr('tweetid'), false)();
-            })();
+                    highlight($(that).attr('tweetid'), false)();
 
-            return false;
+                })();
+
+                return false;
+            });
+            $('.mute').on('click', function(){
+                var that = this;
+                (function(){
+                    var handle = $(that).attr('handle');
+                    var rule = '.' + handle + '{ display: none }';
+                    $("<style type='text/css'>" + rule + "</style>").appendTo("head");
+                })();
+            });
         });
+    }
+
+    searchTwitter(1); 
+
+    $('#radius').on("change", function(){
+        $('#radius-feedback').text($(this).val());
+    });
+
+    $('#radius').on("mouseup keyup", function(){
+        searchTwitter($(this).val());
     });
 }
 

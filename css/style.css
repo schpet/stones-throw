@@ -1,3 +1,7 @@
+body {
+    margin-top: 20px;
+}
+
 #map {
     background: #eee;
     height: 160px;
@@ -16,10 +20,10 @@
 }
 .tweet .avatar {
     float: left;
-    width: 48px;
+    width: 72px;
 }
 .tweet .text {
-    margin-left: 48px;
+    margin-left: 72px;
     margin-right: 72px;
     padding: 0 6px;
 }
@@ -31,12 +35,19 @@
     max-width: 1000px;
     margin: 0 auto;
 }
+.highlight {
+    background-color: #FCF8E3;
+}
+.mute {
+    color: #eee;
+}
 
 @media (max-width: 480px) {
     .hidden-phone-inline {
         display: none;
     }
 }
+
 /* LITTLE SCREENS */
 @media (max-width: 767px) {
     #map {
@@ -46,27 +57,25 @@
         padding: 0;
     }
 }
+
 /* TABLET & DESKTOP */
 @media (min-width: 768px) {
-    .sticky {
-    }
     .map-container {
         position: fixed;
-        max-width: 401px; /* position fixed & responsive = bleh */
-        top: 20px;
+        width: 100%;
+        pointer-events: none;
     }
     #map {
         height: 300px;
     }
+    .pointer-events { 
+        pointer-events: auto;
+    }
+    
     .tweet { 
         padding-top: 10px;
         padding-bottom: 10px;
     }
 }
 
-body {
-    margin-top: 20px;
-}
-.highlight {
-    background-color: #FCF8E3;
-}
+

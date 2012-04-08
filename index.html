@@ -8,20 +8,34 @@
     <link rel="stylesheet" href="css/style.css">
   </head>
   <body>
-    <div class="container-fluid">
-      <div class="row-fluid">
-        <div class="span5 map-container">
-          <div id="map"></div>
+    <div class="map-container">
+      <div class="container-fluid" >
+        <div class="row-fluid">
+          <div class="span5 pointer-events">
+            <div id="map"></div>
+            <div>
+              <h3>Radius <small><span id="radius-feedback">1</span> km</small></h3>
+              <input type="range" min="1" max="15" value="1" id="radius" />
+            </div>
+            <div>
+              
+            </div>
+          </div>
         </div>
       </div>
+    </div>
+    <div class="container-fluid">
       <div class="row-fluid">
         <div class="span5">
           <div class="hidden-phone">&nbsp;</div><!-- hacky -->
         </div>
         <div class="span7">
+          <h3>Tweets near you <small>I bet they are weird</small></h3>
           <div id="tweets"></div>
-          <h3>Tweets without location <small>but <span class="hidden-phone-inline">twitter thinks</span> they are close</small></h3>
+          <h3>Tweets without location <small>but <span class="hidden-phone-inline">twitter thinks</span> they are nearby</small></h3>
           <div id="tweets-no-geo"></div>
+          <a class="btn">Load more</a>
+          <a href="#">Back to top</a>
         </div>
       </div>
     </div>
@@ -33,28 +47,30 @@
     <script type="text/javascript" src="js/latlon.js"></script>
     <script type="text/javascript" src="js/ICanHaz.min.js"></script>
     <script id="tweet" type="text/html">
-      <li id="{{ id }}" class="tweet">
+      <li id="{{ id }}" class="tweet {{ handle }}">
         <div class="avatar">
           {{#location}}
           <a href="http://maps.google.com/maps?z=12&t=m&q=loc:{{ lat }}+{{ lon }}" class="maplink" lat="{{ lat }}" lon="{{ lon }}" tweetid="{{ id }}">
           {{/location}}
-            <img src="http://img.tweetimag.es/i/{{ handle }}_n" />
+            <img src="http://img.tweetimag.es/i/{{ handle }}_b" />
           {{#location}}
           </a>
           {{/location}}
         </div>
         <div class="button">
           {{#location}}
-          <a href="http://maps.google.com/maps?z=12&t=m&q=loc:{{ lat }}+{{ lon }}" class="maplink btn" lat="{{ lat }}" lon="{{ lon }}" tweetid="{{ id }}">
+          <a href="#" class="maplink btn" lat="{{ lat }}" lon="{{ lon }}" tweetid="{{ id }}">
             {{ distance }} km
           </a>
           {{/location}}
         </div>
         <div class="text">
           <a href="http://twitter.com/{{ handle }}">@{{ handle }}</a>
+          <a href="#" class="mute" handle="{{ handle }}">mute</a>
+          <br />
           {{{ text }}}
           <br>
-          {{ time }}
+          <a href="{{ permalink }}">{{ time }}</a>
         </div>
       </li>
     </script>
