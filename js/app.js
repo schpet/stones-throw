@@ -163,6 +163,7 @@ function success(position) {
                     var rule = '.' + handle + '{ display: none }';
                     $("<style type='text/css'>" + rule + "</style>").appendTo("head");
                 })();
+                return false;
             });
         });
     }
