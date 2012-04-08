@@ -18,13 +18,17 @@ function success(position) {
        ,title:"Your location, within " + position.coords.accuracy + " meters"
     });
 
-    function highlight(selector){
+    function highlight(selector, scrollTo){
+        if(scrollTo === undefined)
+            scrollTo = true;
+
         return function() {
             $('.highlight').each(function(){
                 $(this).removeClass('highlight');
             });
             $(selector).addClass('highlight');
-            $(window).scrollTop($(selector).offset().top);
+            if(scrollTo)
+                $(window).scrollTop($(selector).offset().top);
         }
     }
 
@@ -118,6 +122,9 @@ function success(position) {
 
                 map.setCenter(latlng);
                 map.setZoom(15);
+
+                console.log('#' + $(that).attr('tweetid'));
+                highlight('#' + $(that).attr('tweetid'), false)();
             })();
 
             return false;
