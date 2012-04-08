@@ -62,8 +62,8 @@ function success(position) {
         var twitterSearchURL = 'http://search.twitter.com/search.json?callback=?';
         var geocode = position.coords.latitude 
                 + "," + position.coords.longitude 
-                + "," + radius + "km"; 
-
+                + "," + (radius / 1000) + "km"; 
+        
         params = {
             geocode: geocode
            ,include_entities: true
@@ -168,15 +168,40 @@ function success(position) {
         });
     }
 
-    searchTwitter(1); 
+    var radius = 600;
+    function changeRadius(positive){
+        if(positive){
+            if(radius >= 1000){
+                radius += 1000;
+            } else {
+                radius += 100;
+            }
+        } else {
+            if(radius > 1000){
+                radius -= 1000;
+            } else if(radius > 100){
+                radius -= 100
+            }
+        }
+        text = "";
+        if(radius >= 1000){
+            text = parseInt(radius / 1000) + " km";
+        } else {
+            text = radius + " m";
+        }
 
-    $('#radius').on("change", function(){
-        $('#radius-feedback').text($(this).val());
+        $('#radius-feedback').text(text);
+        searchTwitter(radius);
+    }
+    changeRadius(false);
+
+    $('#radius-increase').on("click", function(){
+        changeRadius(true);
+    });
+    $('#radius-decrease').on("click", function(){
+        changeRadius(false);
     });
 
-    $('#radius').on("mouseup keyup", function(){
-        searchTwitter($(this).val());
-    });
 }
 
 function error(msg) {

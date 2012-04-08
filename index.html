@@ -14,8 +14,13 @@
           <div class="span5 pointer-events">
             <div id="map"></div>
             <div>
-              <h3>Radius <small><span id="radius-feedback">1</span> km</small></h3>
-              <input type="range" min="1" max="15" value="1" id="radius" />
+              <h3>Radius <small></small></h3>
+              
+              <div class="btn-group">
+                <button class="btn" id="radius-decrease">-</button>
+                <span class="btn" id="radius-feedback">- km</span>
+                <button class="btn" id="radius-increase">+</button>
+              </div>
             </div>
             <div>
               
