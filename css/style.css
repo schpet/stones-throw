@@ -45,6 +45,25 @@ body {
 .error {
     color: red;
 }
+.jumbo {
+    text-align: center;
+    font-size: 20px;
+}
+.jumbo h1 {
+    font-size: 60px;
+    line-height:120px;
+}
+.jumbo .description p {
+    font-size: 20px;
+    margin-bottom: 20px;
+}
+.privacy {
+    margin-top: 50px;
+    color: #888; 
+}
+.geo {
+    display: none;
+}
 @media (max-width: 480px) {
     .hidden-phone-inline {
         display: none;

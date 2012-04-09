@@ -1,4 +1,8 @@
 function success(position) {
+    _gaq.push(['_trackEvent', 'geolocation', 'success']);
+
+    $('.nogeo').hide();
+    $('.geo').show();
     // via html5demos.com/geo
     var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
     var userPosition = new LatLon(position.coords.latitude, position.coords.longitude);
@@ -18,6 +22,8 @@ function success(position) {
        ,title:"Your location, within " + position.coords.accuracy + " meters"
        ,zIndex: 1000
     });
+
+    _gaq.push(['_trackEvent', 'geolocation', 'accuracy', '', position.coords.accuracy]);
 
     var zindex = 1000;
     var highlighted = null;
@@ -48,7 +54,6 @@ function success(position) {
             highlighted = tweetId;
         }
     }
-
 
     function searchTwitter(radius){
         // TODO use streaming api as it's geo results can be filtered better.
@@ -118,8 +123,11 @@ function success(position) {
                     });
                     markers[i] = tweetMarker;
 
-                    google.maps.event.addListener(tweetMarker, 'click', 
-                            highlight(i));
+                    google.maps.event.addListener(tweetMarker, 'click', function(){
+                                highlight(i)();
+                                _gaq.push(['_trackEvent', 'user', 'map click']);
+                            }
+                    );
                 } else {
                     var rendered = ich.tweet(tweetData)
                     tweetsNoGeo.append(rendered);
@@ -154,6 +162,7 @@ function success(position) {
                     highlight($(that).attr('tweetid'), false)();
 
                 })();
+                _gaq.push(['_trackEvent', 'user', 'maplink click']);
                 } catch(e){
                     $('#error').text(e);
                 } finally {
@@ -167,6 +176,7 @@ function success(position) {
                     var rule = '.' + handle + '{ display: none }';
                     $("<style type='text/css'>" + rule + "</style>").appendTo("head");
                 })();
+                _gaq.push(['_trackEvent', 'user', 'mute']);
                 return false;
             });
         });
@@ -209,11 +219,12 @@ function success(position) {
 }
 
 function error(msg) {
-    alert(msg);
+    _gaq.push(['_trackEvent', 'geolocation', 'error', msg]);
 }
 
 if (navigator.geolocation) {
+    //_trackEvent(category, action, opt_label, opt_value, opt_noninteraction)
     navigator.geolocation.getCurrentPosition(success, error);
 } else {
-    alert('not supported, dang');
+    _gaq.push(['_trackEvent', 'geolocation', 'not supported']);
 }

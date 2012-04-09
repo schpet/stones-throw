@@ -4,41 +4,75 @@
     <meta charset="utf-8">
     <title>Stone's Throw</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="See tweets near you" />
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/style.css">
   </head>
   <body>
-    <div class="map-container">
-      <div class="container-fluid" >
-        <div class="row-fluid">
-          <div class="span5 pointer-events">
-            <div id="map"></div>
-            <div>
-              <h3>Search Radius</h3>
-              
-              <div class="btn-group">
-                <button class="btn" id="radius-decrease">&ndash;</button>
-                <span class="btn" id="radius-feedback">- km</span>
-                <button class="btn" id="radius-increase">+</button>
-              </div>
+    <div class="nogeo">
+      <div class="row-fluid">
+        <div class="span12">
+          <header class="jumbo">
+            <h1>Stone's Throw</h1>
+            <div class="description">
+            <p>
+              See tweets within a stone's throw.
+            <p>
+            <p>
+              You need to let your browser track your physical location
+              for this to work.
+            </p>
             </div>
-            <div class="error">
-              <span id="error"></span>
+            <div class="privacy">
+              <h3>Privacy</h3>
+              <p>
+                I don't keep track of your location, but this page uses Google 
+                Maps and they might.
+              </p>
+            </div>
+          </header>
+
+          </div>
+
+          <noscript style="color: red; font-weight: bold;" >
+            This site doesn't work, at all, without javascript. Sorry.
+          </noscript>
+        </div>
+      </div>
+    </div>
+    <div class="geo">
+      <div class="map-container">
+        <div class="container-fluid" >
+          <div class="row-fluid">
+            <div class="span5 pointer-events">
+              <div id="map"></div>
+              <div>
+                <h3>Search Radius</h3>
+                
+                <div class="btn-group">
+                  <button class="btn" id="radius-decrease">&ndash;</button>
+                  <span class="btn" id="radius-feedback">- km</span>
+                  <button class="btn" id="radius-increase">+</button>
+                </div>
+              </div>
+              <div class="error">
+                <span id="error"></span>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-    <div class="container-fluid">
-      <div class="row-fluid">
-        <div class="span5">
-          <div class="hidden-phone">&nbsp;</div><!-- hacky -->
-        </div>
-        <div class="span7">
-          <h3>Tweets near you <small>I bet they are weird</small></h3>
-          <div id="tweets"></div>
-          <h3>Tweets without location <small>but <span class="hidden-phone-inline">twitter thinks</span> they are nearby</small></h3>
-          <div id="tweets-no-geo"></div>
+      <div class="container-fluid">
+        <div class="row-fluid">
+          <div class="span5">
+            <div class="hidden-phone">&nbsp;</div><!-- hacky -->
+          </div>
+          <div class="span7">
+            <h3>Tweets near you <small>I bet they are weird</small></h3>
+            <div id="tweets"></div>
+            <h3>Tweets without location <small>but <span class="hidden-phone-inline">twitter thinks</span> they are nearby</small></h3>
+            <div id="tweets-no-geo"></div>
+          </div>
         </div>
       </div>
     </div>
@@ -76,6 +110,12 @@
           <a href="{{ permalink }}">{{ time }}</a>
         </div>
       </li>
+    </script>
+    <script type="text/javascript">
+    var _gaq=[['_setAccount','UA-24600517-1'],['_trackPageview']]; 
+    (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];g.async=1;
+    g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+    s.parentNode.insertBefore(g,s)}(document,'script'));
     </script>
     
     <script type="text/javascript" src="js/app.js"></script>
