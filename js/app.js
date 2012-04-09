@@ -33,7 +33,7 @@ function success(position) {
     var icon = new google.maps.MarkerImage('img/tweet.png')
     var icon_highlight = new google.maps.MarkerImage('img/tweet_highlight.png')
 
-    function highlight(tweetId, scrollTo){
+    function highlight(tweetId, source, scrollTo){
         if(scrollTo === undefined)
             scrollTo = true;
 
@@ -52,6 +52,7 @@ function success(position) {
             markers[tweetId].setZIndex(zindex++);
             markers[tweetId].setIcon(icon_highlight);
             highlighted = tweetId;
+            _gaq.push(['_trackEvent', 'user', source ]);
         }
     }
 
@@ -97,7 +98,6 @@ function success(position) {
                 }
 
                 if(tweet.geo){
-                    console.log(tweet);
                     var lat = tweet.geo.coordinates[0];
                     var lon = tweet.geo.coordinates[1];
                     var tweetPosition = new LatLon(lat, lon);
@@ -123,17 +123,12 @@ function success(position) {
                     });
                     markers[i] = tweetMarker;
 
-                    google.maps.event.addListener(tweetMarker, 'click', function(){
-                                highlight(i)();
-                                _gaq.push(['_trackEvent', 'user', 'map click']);
-                            }
-                    );
+                    google.maps.event.addListener(tweetMarker, 'click', highlight(i, 'map'));
                 } else {
                     var rendered = ich.tweet(tweetData)
                     tweetsNoGeo.append(rendered);
                 }
             }
-            console.log(markers);
 
             $('#tweets').empty();
             $('#tweets').append(tweets);
@@ -159,10 +154,9 @@ function success(position) {
                     map.setCenter(latlng);
                     map.setZoom(15);
 
-                    highlight($(that).attr('tweetid'), false)();
+                    highlight($(that).attr('tweetid'), 'button click', false)();
 
                 })();
-                _gaq.push(['_trackEvent', 'user', 'maplink click']);
                 } catch(e){
                     $('#error').text(e);
                 } finally {
