@@ -4,13 +4,6 @@
  *
  */
 
-// http://stackoverflow.com/q/3066586/
-Date.prototype.yyyy_mm_dd = function() {
-    var yyyy = this.getFullYear().toString();
-    var mm = (this.getMonth()+1).toString(); // getMonth() is zero-based
-    var dd  = this.getDate().toString();
-    return yyyy + '-' + (mm[1]?mm:"0"+mm[0]) + '-' + (dd[1]?dd:"0"+dd[0]); 
-};
 
 var markers = {};
 var zindex = 1000;
@@ -44,7 +37,7 @@ function highlight(tweetId, source, scrollTo){
 
         highlighted = tweetId;
 
-        _gaq.push(['_trackEvent', 'user', source ]);
+        _gaq.push(['_trackEvent', 'stones throw', 'user', source ]);
     }
 }
 
@@ -186,7 +179,7 @@ function searchTwitter(since_id){
                 var rule = '.' + handle + '{ display: none }';
                 $("<style type='text/css'>" + rule + "</style>").appendTo("head");
             })();
-            _gaq.push(['_trackEvent', 'user', 'mute']);
+            _gaq.push(['_trackEvent', 'stones throw', 'user', 'mute']);
             return false;
         });
     });
@@ -224,7 +217,7 @@ function refresh(){
 
 
 function success(the_position) {
-    _gaq.push(['_trackEvent', 'geolocation', 'success']);
+    _gaq.push(['_trackEvent', 'stones throw', 'geolocation', 'success']);
 
     position = the_position;
 
@@ -252,12 +245,12 @@ function success(the_position) {
     });
     changeRadius(false);
 
-    _gaq.push(['_trackEvent', 'geolocation', 'accuracy', '', position.coords.accuracy]);
+    _gaq.push(['_trackEvent', 'stones throw', 'geolocation', 'accuracy', position.coords.accuracy]);
 
 }
 
 function error(msg) {
-    _gaq.push(['_trackEvent', 'geolocation', 'error', msg]);
+    _gaq.push(['_trackEvent', 'stones throw', 'geolocation', 'error', msg]);
 }
 
 
@@ -266,7 +259,7 @@ if (navigator.geolocation) {
     //_trackEvent(category, action, opt_label, opt_value, opt_noninteraction)
     navigator.geolocation.getCurrentPosition(success, error);
 } else {
-    _gaq.push(['_trackEvent', 'geolocation', 'not supported']);
+    _gaq.push(['_trackEvent', 'stones throw', 'geolocation', 'not supported']);
 }
 
 $('#radius-increase').on("click", function(){
