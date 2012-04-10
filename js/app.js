@@ -96,7 +96,8 @@ function searchTwitter(since_id){
 
             var time = prettyDate(tweet.created_at);
             var text = twttr.txt.autoLink(tweet.text, {
-                urlEntities: tweet.entities.urls 
+                urlEntities: tweet.entities.urls
+               ,target: "_blank" 
             });
             var link = 'https://twitter.com/' + tweet.from_user + '/status/' + tweet.id_str;
 
