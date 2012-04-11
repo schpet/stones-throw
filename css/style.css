@@ -15,7 +15,7 @@ body {
 
 .tweet { 
     border-top: 1px solid #eee;
-    padding: 6px;
+    padding: 6px 0;
     overflow: hidden;
 }
 .tweet .avatar {
@@ -31,6 +31,7 @@ body {
     float: right;
     width: 72px;
 }
+
 .container-fluid {
     max-width: 1000px;
     margin: 0 auto;
@@ -74,9 +75,28 @@ body {
 @media (max-width: 767px) {
     #map {
         height: 160px;
+        margin-left: -6px;
+        margin-right: -6px;
     }
     body {
+        margin-top: 0;
         padding: 0;
+    }
+    .tweet .avatar {
+        float: none;
+        margin-bottom: 6px;
+    }
+    .tweet .button {
+        float: none;
+    }
+    .tweet .controls {
+        float: left;
+    }
+    .tweet .text {
+        margin-right: 0;
+    }
+    .container-fluid {
+        padding: 0 6px;
     }
 }
 
@@ -93,7 +113,6 @@ body {
     .pointer-events { 
         pointer-events: auto;
     }
-    
     .tweet { 
         padding-top: 10px;
         padding-bottom: 10px;

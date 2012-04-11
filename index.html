@@ -32,7 +32,6 @@
             </div>
           </header>
 
-          </div>
 
           <noscript style="color: red; font-weight: bold;" >
             This site doesn't work, at all, without javascript. Sorry.
@@ -88,21 +87,23 @@
     <script type="text/javascript" src="js/ICanHaz.min.js"></script>
     <script id="tweet" type="text/html">
       <li id="{{ id }}" class="tweet {{ handle }}">
-        <div class="avatar">
-          {{#location}}
-          <a href="http://maps.google.com/maps?z=12&t=m&q=loc:{{ lat }}+{{ lon }}" class="maplink" lat="{{ lat }}" lon="{{ lon }}" tweetid="{{ id }}">
-          {{/location}}
-            <img src="http://img.tweetimag.es/i/{{ handle }}_b" />
-          {{#location}}
-          </a>
-          {{/location}}
-        </div>
-        <div class="button">
-          {{#location}}
-          <a href="#" class="maplink btn" lat="{{ lat }}" lon="{{ lon }}" tweetid="{{ id }}">
-            {{ distance }} km
-          </a>
-          {{/location}}
+        <div class="controls">
+          <div class="avatar">
+            {{#location}}
+            <a href="http://maps.google.com/maps?z=12&t=m&q=loc:{{ lat }}+{{ lon }}" class="maplink" lat="{{ lat }}" lon="{{ lon }}" tweetid="{{ id }}">
+            {{/location}}
+              <img src="http://img.tweetimag.es/i/{{ handle }}_b" />
+            {{#location}}
+            </a>
+            {{/location}}
+          </div>
+          <div class="button">
+            {{#location}}
+            <a href="#" class="maplink btn" lat="{{ lat }}" lon="{{ lon }}" tweetid="{{ id }}">
+              {{ distance }} km
+            </a>
+            {{/location}}
+          </div>
         </div>
         <div class="text">
           <a href="http://twitter.com/{{ handle }}" target="_blank">@{{ handle }}</a>
