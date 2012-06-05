@@ -1,0 +1,146 @@
+/*
+ * SKELETOR NEEDS SOME STYLING
+ */
+
+@import "bootstrap/bootstrap.less";
+
+body {
+  margin-top: 20px;
+}
+
+#map {
+  background: #eee;
+  height: 160px;
+}
+.btn {
+  margin-bottom: 5px;
+}
+
+.tweet { 
+  border-top: 1px solid #eee;
+  padding: 6px 0;
+  overflow: hidden;
+
+  img {
+    border-radius: 5px;
+  }
+  .avatar {
+    float: left;
+    width: 72px;
+  }
+  .text {
+    margin-left: 72px;
+    padding: 0 6px;
+  }
+  .content {
+  }
+  .button {
+    float: right;
+    width: 72px;
+  }
+}
+
+.container-fluid {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.highlight {
+  background-color: #FCF8E3;
+}
+.mute {
+  color: #ddd;
+}
+
+.error {
+  color: red;
+}
+
+.tweet-meta {
+  font-size: 12px;
+  color: #999;
+}
+.tweet-meta a {
+  text-decoration: underline;
+  color: #888;
+}
+
+@media (max-width: 480px) {
+  .hidden-phone-inline {
+    display: none;
+  }
+}
+
+/* LITTLE SCREENS */
+@media (max-width: 767px) {
+  #map {
+    height: 160px;
+    margin-left: -6px;
+    margin-right: -6px;
+  }
+  body {
+    margin-top: 0;
+    padding: 0;
+  }
+  .tweet {
+    .avatar {
+      float: none;
+      margin-bottom: 6px;
+    }
+    .button {
+      float: none;
+    }
+    .controls {
+      float: left;
+    }
+    .text {
+      margin-right: 0;
+    }
+  }
+  .container-fluid {
+    padding: 0 6px;
+  }
+}
+
+/* TABLET & DESKTOP */
+@media (min-width: 768px) {
+  .map-container {
+    position: fixed;
+    width: 100%;
+    pointer-events: none;
+  }
+  #map {
+    height: 300px;
+  }
+  .pointer-events { 
+    pointer-events: auto;
+  }
+  .tweet { 
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+}
+
+// Intro Splash
+.jumbo {
+  text-align: center;
+  font-size: 20px;
+  h1 {
+    font-size: 60px;
+    line-height:120px;
+  }
+  .description p {
+    font-size: 20px;
+    margin-bottom: 20px;
+  }
+}
+.privacy {
+  margin-top: 50px;
+  color: #888; 
+}
+.geo {
+  display: none;
+}
+p {
+  margin: 10px 0;
+}

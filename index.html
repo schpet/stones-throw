@@ -5,8 +5,7 @@
     <title>Stone's Throw</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="See tweets near you" />
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style.min.css">
   </head>
   <body>
     <div class="nogeo">
@@ -17,7 +16,7 @@
             <div class="description">
             <p>
               See tweets within a stone's throw.
-            <p>
+            </p>
             <p>
               You need to let your browser track your physical location
               for this to work.
@@ -26,8 +25,8 @@
             <div class="privacy">
               <h3>Privacy</h3>
               <p>
-                I don't keep track of your location, but this page uses Google 
-                Maps and they might.
+                This page uses Google Maps and Google Analytics, they might
+                keep track of your location.
               </p>
             </div>
           </header>
@@ -55,7 +54,7 @@
 
 
                 </span>
-                <button class="btn" id="refresh">Refresh</button>
+                <button class="btn" id="refresh">Update</button>
               </div>
               <div class="error">
                 <span id="error"></span>
@@ -79,49 +78,67 @@
       </div>
     </div>
 
-    <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-    <script type="text/javascript" src="js/pretty.js"></script>
-    <script type="text/javascript" src="js/twitter-text.js"></script>
-    <script type="text/javascript" src="js/latlon.js"></script>
-    <script type="text/javascript" src="js/ICanHaz.min.js"></script>
+
     <script id="tweet" type="text/html">
       <li id="{{ id }}" class="tweet {{ handle }}">
         <div class="controls">
+
           <div class="avatar">
-            {{#location}}
-            <a href="http://maps.google.com/maps?z=12&t=m&q=loc:{{ lat }}+{{ lon }}" class="maplink" lat="{{ lat }}" lon="{{ lon }}" tweetid="{{ id }}">
-            {{/location}}
-              <img src="http://img.tweetimag.es/i/{{ handle }}_b" />
-            {{#location}}
+            <a href="javascript:;" class="avatar-link" data-tweetid="{{ id }}">
+              <img src="{{ avatarSmall }}" />
             </a>
-            {{/location}}
           </div>
-          <div class="button">
-            {{#location}}
-            <a href="#" class="maplink btn" lat="{{ lat }}" lon="{{ lon }}" tweetid="{{ id }}">
-              {{ distance }} km
-            </a>
-            {{/location}}
-          </div>
+
         </div>
         <div class="text">
           <a href="http://twitter.com/{{ handle }}" target="_blank">@{{ handle }}</a>
           <a href="#" class="mute" handle="{{ handle }}">mute</a>
-          <br />
-          {{{ text }}}
-          <br>
-          <a href="{{ permalink }}" target="_blank">{{ time }}</a>
+          <div class="content">
+            {{{ text }}}
+          </div>
+          <div class="tweet-meta">
+          {{ time }} 
+          {{#location}}
+            <a href="javascript:;" class="maplink" lat="{{ lat }}" lon="{{ lon }}" tweetid="{{ id }}" title="See this tweet on a map">
+              {{ distance }} km away</a>
+          {{/location}}
+          </div>
         </div>
+
+        <div class="modal hide" id="popup-{{ id }}">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">×</button>
+            <h3>
+              <a href="http://twitter.com/{{ handle }}" target="_blank">
+                @{{ handle }}
+              </a>
+            </h3>
+          </div>
+          <div class="modal-body">
+            <img src="{{ avatarFull }}" />
+            <p>{{{ text }}}</p>
+            <a href="{{ permalink }}" target="_blank">view on twitter</a>
+          </div>
+        </div>
+
       </li>
     </script>
+
+    <script type="text/javascript" src="//maps.google.com/maps/api/js?sensor=false"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <!-- TODO combine and minify -->
+    <script type="text/javascript" src="js/pretty.js"></script>
+    <script type="text/javascript" src="js/twitter-text.js"></script>
+    <script type="text/javascript" src="js/latlon.js"></script>
+    <script type="text/javascript" src="js/ICanHaz.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap-modal.js"></script>
+    <script type="text/javascript" src="js/app.js"></script>
+
     <script type="text/javascript">
     var _gaq=[['_setAccount','UA-24600517-1'],['_trackPageview']]; 
     (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];g.async=1;
     g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
     s.parentNode.insertBefore(g,s)}(document,'script'));
     </script>
-    
-    <script type="text/javascript" src="js/app.js"></script>
   </body>
 </html>
