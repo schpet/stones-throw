@@ -7,13 +7,13 @@
 
 var markers = {};
 var zindex = 1000;
-var highlighted = undefined;
-var icon = new google.maps.MarkerImage('img/tweet.png')
-var icon_highlight = new google.maps.MarkerImage('img/tweet_highlight.png')
+var highlighted = null;
+var icon = new google.maps.MarkerImage('img/tweet.png');
+var icon_highlight = new google.maps.MarkerImage('img/tweet_highlight.png');
 var map;
 var position;
 var userPosition;
-var oldest_id = undefined;
+var oldest_id = null;
 
 function highlight(tweetId, source, scrollTo){
   if(scrollTo === undefined)
@@ -38,7 +38,7 @@ function highlight(tweetId, source, scrollTo){
     highlighted = tweetId;
 
     _gaq.push(['_trackEvent', 'stones throw', 'user', source ]);
-  }
+  };
 }
 
 function searchTwitter(since_id){
@@ -53,26 +53,26 @@ function searchTwitter(since_id){
 
   twitterSearchURL += "?callback=?";
 
-  var geocode = position.coords.latitude 
-      + "," + position.coords.longitude 
-      + "," + (radius / 1000) + "km"; 
+  var geocode = position.coords.latitude +
+    "," + position.coords.longitude +
+    "," + (radius / 1000) + "km";
 
   params = {
     geocode: geocode
      ,include_entities: true
      ,result_type: 'recent'
      ,rpp: 100
-  }
+  };
 
   if(since_id){
-    params['since_id'] = since_id;
+    params.since_id = since_id;
   }
 
   $.getJSON(twitterSearchURL, params, function(data){
     var tweets = $("<ul class='unstyled' />");
     var tweetsNoGeo = $("<ul class='unstyled' />");
     var latlngs = [];
-    
+
     for (var i = 0; i < data.results.length; i++){
       var tweet = data.results[i];
 
@@ -90,12 +90,12 @@ function searchTwitter(since_id){
       var time = prettyDate(tweet.created_at);
       var text = twttr.txt.autoLink(tweet.text, {
         urlEntities: tweet.entities.urls
-         ,target: "_blank" 
+         ,target: "_blank"
       });
       var link = 'https://twitter.com/' + tweet.from_user + '/status/' + tweet.id_str;
 
       // If the date is older than yesterday, chuck it
-      // set the since_id on each tweet that is 
+      // set the since_id on each tweet that is
 
       var tweetData = {
         text: text
@@ -103,9 +103,9 @@ function searchTwitter(since_id){
          ,time: time
          ,id: i
          ,permalink: link
-         ,avatarSmall: tweet.profile_image_url.replace(/_normal\./, '_bigger\.')
+         ,avatarSmall: tweet.profile_image_url.replace(/_normal\./, '_bigger.')
          ,avatarFull: tweet.profile_image_url.replace(/_normal\./,'.')
-      }
+      };
 
       if(tweet.geo){
         var lat = tweet.geo.coordinates[0];
@@ -114,12 +114,12 @@ function searchTwitter(since_id){
         var distance = userPosition.distanceTo(tweetPosition);
         distance = parseFloat(distance).toFixed(2);
 
-        tweetData['distance'] = distance;
-        tweetData['lat'] = lat;
-        tweetData['lon'] = lon
-        tweetData['location'] = true
+        tweetData.distance = distance;
+        tweetData.lat = lat;
+        tweetData.lon = lon;
+        tweetData.location = true;
 
-        var rendered = ich.tweet(tweetData)
+        var rendered = ich.tweet(tweetData);
         tweets.append(rendered);
 
         // G Maps marker
@@ -129,14 +129,14 @@ function searchTwitter(since_id){
           title: tweet.text
            ,map: map
            ,position: latlng
-           ,icon: icon 
+           ,icon: icon
         });
         markers[i] = tweetMarker;
 
         google.maps.event.addListener(tweetMarker, 'click', highlight(i, 'map'));
       } else {
-        var rendered = ich.tweet(tweetData)
-        tweetsNoGeo.append(rendered);
+        var noGeoRendered = ich.tweet(tweetData);
+        tweetsNoGeo.append(noGeoRendered);
       }
     }
 
@@ -146,7 +146,7 @@ function searchTwitter(since_id){
     $('#tweets-no-geo').append(tweetsNoGeo);
 
     var latlngbounds = new google.maps.LatLngBounds();
-    for (var i = 0; i < latlngs.length; i++){
+    for (i = 0; i < latlngs.length; i++){
       latlngbounds.extend(latlngs[i]);
     }
 
@@ -207,12 +207,12 @@ function changeRadius(positive){
     if(radius > 1000){
       radius -= 1000;
     } else if(radius > 100){
-      radius -= 100
+      radius -= 100;
     }
   }
   text = "";
   if(radius >= 1000){
-    text = parseInt(radius / 1000) + " km";
+    text = parseInt(radius / 1000, 10) + " km";
   } else {
     text = radius + " m";
   }
@@ -248,7 +248,7 @@ function success(the_position) {
 
   map = new google.maps.Map($("#map").get(0), myOptions);
   var marker = new google.maps.Marker({
-    position: latlng 
+    position: latlng
      ,map: map
      ,title:"Your location, within " + position.coords.accuracy + " meters"
      ,zIndex: 1000
