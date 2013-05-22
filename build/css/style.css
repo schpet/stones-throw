@@ -2383,3 +2383,17 @@ body {
 p {
   margin: 10px 0;
 }
+
+.btn-group {
+  position: static;
+}
+
+.map {
+  margin-bottom: 10px;
+}
+
+.btn-zoom {
+  width: 49%;
+  line-height: 40px;
+  text-transform: uppercase;
+}

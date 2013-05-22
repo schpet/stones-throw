@@ -278,5 +278,6 @@ $('#radius-decrease').on("click", function(){
 });
 $('#refresh').on("click", function(){
   refresh();
+  return false;
 });
 
